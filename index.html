@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CEC Website</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #fff9e6;
+            color: #2b2b2b;
+            padding-bottom: 110px;
+        }
+
+        .nav {
+            background: #ffffff;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e0c96d;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .nav button {
+            margin: 5px;
+            padding: 12px 25px;
+            background: #ffd36e;
+            border: 1px solid #e6b84a;
+            color: #000;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            transition: 0.25s;
+        }
+
+        .nav button:hover {
+            background: #ffbf3f;
+            border-color: #d99a22;
+            transform: translateY(-2px);
+        }
+
+        .page {
+            display: none;
+            padding: 20px;
+        }
+
+        .main-container {
+            max-width: 700px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .content-box {
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            font-weight: bold;
+        }
+
+        .box-blue { background: #e8f4fd; border: 2px solid #a2d2ff; }
+        .box-pink { background: #fff0f3; border: 2px solid #ffb3c6; }
+        .box-green { background: #e9edc9; border: 2px solid #ccd5ae; }
+        .box-yellow { background: #fcf6bd; border: 2px solid #f7d6e0; }
+        .box-mint { background: #e2ece9; border: 2px solid #dfede8; }
+
+        /* Auto-Scrolling Marquee Container */
+        .marquee-container {
+            overflow: hidden;
+            width: 100%;
+            position: relative;
+            display: flex;
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 15px;
+            width: max-content;
+            animation: scrollMarquee 35s linear infinite;
+        }
+
+        .marquee-container:hover .marquee-track {
+            animation-play-state: paused;
+        }
+
+        .scrolling-img {
+            width: 260px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid #a2d2ff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            flex-shrink: 0;
+        }
+
+        @keyframes scrollMarquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #ffffff;
+            padding: 12px 15px;
+            text-align: center;
+            border-top: 1px solid #e0c96d;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        .footer button {
+            padding: 10px 25px;
+            background: #ffd36e;
+            border: 1px solid #e6b84a;
+            color: #000;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+            transition: 0.25s;
+        }
+
+        .footer button:hover {
+            background: #ffbf3f;
+            border-color: #d99a22;
+        }
+
+        .copyright-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 8px;
+            font-weight: bold;
+        }
+
+        .clean-btn {
+            padding: 14px 28px;
+            background: #ffd36e;
+            border: 1px solid #e6b84a;
+            color: #000;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.25s;
+            margin: 5px;
+            display: inline-block;
+        }
+
+        .clean-btn:hover {
+            background: #ffbf3f;
+            border-color: #d99a22;
+        }
+
+        .signout-btn {
+            background: #ff6b6b;
+            border: 1px solid #e05252;
+            color: #fff;
+        }
+
+        .signout-btn:hover {
+            background: #ff5252;
+            border-color: #c93b3b;
+        }
+
+        .signup-form input, .signup-form textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #e6b84a;
+            background: #ffffff;
+            color: #2b2b2b;
+            font-size: 15px;
+            font-weight: bold;
+            font-family: inherit;
+        }
+
+        .dropzone {
+            border: 2px dashed #ff8fa3;
+            border-radius: 10px;
+            background: #ffffff;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.25s;
+            margin: 10px 0;
+            color: #666;
+        }
+
+        .dropzone.dragover {
+            background: #ffe5ec;
+            border-color: #ff4d6d;
+        }
+
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .preview-thumb {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #ffb3c6;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            background: #fff;
+        }
+
+        .preview-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .preview-remove {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .preview-remove:hover {
+            background: red;
+            transform: scale(1.1);
+        }
+
+        .profile-circle {
+            width: 80px;
+            height: 80px;
+            background: #ffd36e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #000;
+            margin: 20px auto;
+        }
+
+        .nav-account {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-account-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #2b2b2b;
+        }
+
+        .nav-account-circle {
+            width: 36px;
+            height: 36px;
+            background: #ffd36e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .image-gallery {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .custom-img {
+            width: 100%;
+            max-width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid #ffb3c6;
+            display: block;
+        }
+
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 14px;
+            border: 2px solid #e6b84a;
+            text-align: center;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+            width: 300px;
+            display: none;
+            font-weight: bold;
+            z-index: 2000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="nav">
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('custom')">Custom</button>
+    <button onclick="showPage('contact')">Contact</button>
+    <button id="navAuthBtn" onclick="handleAuthClick()">Sign Up</button>
+
+    <div id="navAccount" class="nav-account" style="display:none;">
+        <span id="navAccountName" class="nav-account-name"></span>
+        <div id="navAccountCircle" class="nav-account-circle"></div>
+    </div>
+</div>
+
+<!-- Home Page -->
+<div id="home" class="page">
+    <div class="main-container">
+        <div class="content-box box-blue" style="text-align: left;">
+            <h1>Home</h1>
+        </div>
+        <div class="content-box box-blue" style="text-align: left;">
+            <p>Welcome to CEC — Where the Fun Is.</p>
+        </div>
+        
+        <div class="content-box box-blue" style="text-align: left; overflow: hidden;">
+            <div class="marquee-container">
+                <div class="marquee-track">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80" class="scrolling-img" alt="Working">
+                    <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80" class="scrolling-img" alt="Working">
+                    <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80" class="scrolling-img" alt="Working">
+                    <img src="https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=600&q=80" class="scrolling-img" alt="Working">
+                    
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80" class="scrolling-img" alt="Working">
+                    <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80" class="scrolling-img" alt="Working">
+                    <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80" class="scrolling-img" alt="Working">
+                    <img src="https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=600&q=80" class="scrolling-img" alt="Working">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Page -->
+<div id="custom" class="page">
+    <div class="main-container" style="padding-bottom: 30px;">
+        <div class="content-box box-pink" style="text-align: center;">
+            <h1>Custom</h1>
+        </div>
+        <div class="content-box box-pink" style="text-align: center;">
+            <p>Send us your idea.</p>
+        </div>
+        <div class="content-box box-pink" style="text-align: left;">
+            <p style="line-height: 1.6;">At The CEC, you can get custom 3D prints, hats, patches, and personalized carvings on items like water bottles. We also offer iron-on designs and stickers that can be either permanent or removable. Tell us what you want, and we can make it happen!</p>
+        </div>
+
+        <div class="content-box box-pink" style="text-align: left;">
+            <h3>How Custom Orders Work:</h3>
+            <p style="line-height: 1.6; font-size: 14px; margin-top: 10px;">
+                1. <strong>Make sure you are signed up & logged in</strong> so we know who is sending the request.<br>
+                2. <strong>Fill out your idea & drop images below</strong> and click submit to send it instantly.<br>
+                3. <strong>Get a quote:</strong> We will review your idea and reply with a custom price quote in 2–4 business days!
+            </p>
+        </div>
+
+        <div class="content-box box-pink" style="text-align: center;">
+            <div class="image-gallery">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80" class="custom-img" alt="Custom Sample 1">
+                <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=600&q=80" class="custom-img" alt="Custom Sample 2">
+            </div>
+            
+            <div style="margin-top: 20px; text-align: left;" class="signup-form">
+                <h3>Send Custom Idea</h3>
+                <textarea id="customIdeaText" rows="3" placeholder="Describe your custom idea here..."></textarea>
+                
+                <label style="font-size: 14px; display: block; margin-top: 10px;">Attach Reference Images:</label>
+                <div id="dropzone" class="dropzone" onclick="document.getElementById('fileInput').click()">
+                    📁 <strong>Drag & drop images here</strong> or click to browse files
+                    <input type="file" id="fileInput" multiple accept="image/*" style="display: none;" onchange="handleFiles(this.files)">
+                </div>
+                <div id="previewContainer" class="preview-container"></div>
+
+                <button class="clean-btn" onclick="submitCustomIdea()" style="width: 100%; margin-top: 15px;">
+                    ✉️ Send Custom Idea to CEC
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Page -->
+<div id="contact" class="page">
+    <div class="main-container">
+        <div class="content-box box-green" style="text-align: left;">
+            <h1>Contact</h1>
+        </div>
+        <div class="content-box box-green" style="text-align: left;">
+            <p>Email: cecwherethefunis2022@gmail.com</p>
+        </div>
+        <div class="content-box box-green" style="text-align: left;">
+            <p>Phone: 509-957-4449</p>
+        </div>
+    </div>
+</div>
+
+<!-- Sign Up Page -->
+<div id="signup" class="page">
+    <div class="main-container">
+        <div class="content-box box-yellow" style="text-align: left;">
+            <h1>Create Your Account</h1>
+        </div>
+        <div class="content-box box-yellow" style="text-align: left;">
+            <p style="font-size: 14px;">Fill out your info below and click "Complete Sign Up" to register instantly!</p>
+        </div>
+        <div class="content-box box-yellow" style="text-align: left;">
+            <div class="signup-form">
+                <input id="fullName" type="text" placeholder="Full Name">
+                <input id="emailPhone" type="text" placeholder="Email / Phone">
+                
+                <div style="margin-top: 15px; text-align: center;">
+                    <button class="clean-btn" onclick="completeAccountCreation()" style="background: #a8e6cf; border-color: #88d4bc; width: 100%;">Complete Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Profile Page View -->
+<div id="profilePage" class="page">
+    <div class="main-container">
+        <div class="content-box box-mint" style="text-align: center;">
+            <h1>Your Account</h1>
+        </div>
+        <div class="content-box box-mint" style="text-align: center;">
+            <div class="profile-circle" id="profilePageCircle"></div>
+            <h3 id="profilePageName" style="margin-bottom: 5px;"></h3>
+            <p id="profilePageContact" style="margin-bottom: 20px;"></p>
+        </div>
+        <div class="content-box box-mint" style="text-align: center;">
+            <div>
+                <button class="clean-btn signout-btn" onclick="signOut()">Sign Out</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer" id="footerContainer">
+    <button id="footerAuthBtn" onclick="handleAuthClick()">Sign Up</button>
+    <div class="copyright-text">© CEC 2026-27</div>
+</div>
+
+<div id="welcomePopup" class="popup">
+    <p style="font-size:18px; margin-bottom:10px;">Welcome to CEC!</p>
+    <button class="clean-btn" onclick="closePopup()">OK</button>
+</div>
+
+<script>
+    let account = { name: null, contact: null, letter: null, loggedIn: false };
+    let uploadedFilesData = [];
+
+    const SIGNUP_ENDPOINT = "https://formspree.io/f/mdeklyqr";
+    const CUSTOM_ENDPOINT = "https://formspree.io/f/xrpbajzr";
+    const SIGNOUT_ENDPOINT = "https://formspree.io/f/maendked"; // Formspree endpoint for signouts
+
+    window.onload = function() {
+        let savedName = localStorage.getItem("cec_name");
+        let savedContact = localStorage.getItem("cec_contact");
+
+        if (savedName && savedContact) {
+            account.name = savedName;
+            account.contact = savedContact;
+            account.letter = savedName.charAt(0).toUpperCase();
+            account.loggedIn = true;
+            updateUIForLoggedInState();
+        }
+
+        setupDropzone();
+        showPage('home');
+        document.getElementById("welcomePopup").style.display = "block";
+    };
+
+    function showPage(page) {
+        document.getElementById("home").style.display = "none";
+        document.getElementById("custom").style.display = "none";
+        document.getElementById("contact").style.display = "none";
+        document.getElementById("signup").style.display = "none";
+        document.getElementById("profilePage").style.display = "none";
+
+        if (page === 'signup') {
+            if (account.loggedIn) {
+                document.getElementById("profilePage").style.display = "block";
+            } else {
+                document.getElementById("signup").style.display = "block";
+            }
+        } else {
+            document.getElementById(page).style.display = "block";
+        }
+        window.scrollTo(0, 0);
+    }
+
+    function handleAuthClick() {
+        showPage('signup');
+    }
+
+    function closePopup() {
+        document.getElementById("welcomePopup").style.display = "none";
+    }
+
+    function setupDropzone() {
+        const dropzone = document.getElementById('dropzone');
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropzone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropzone.classList.add('dragover');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropzone.classList.remove('dragover');
+            }, false);
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            let dt = e.dataTransfer;
+            let files = dt.files;
+            handleFiles(files);
+        }, false);
+    }
+
+    function handleFiles(files) {
+        for (let i = 0; i < files.length; i++) {
+            let file = files[i];
+            if (file.type.startsWith('image/')) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedFilesData.push({
+                        name: file.name,
+                        data: e.target.result
+                    });
+                    renderPreviews();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    }
+
+    function renderPreviews() {
+        const container = document.getElementById('previewContainer');
+        container.innerHTML = '';
+        
+        uploadedFilesData.forEach((item, index) => {
+            let div = document.createElement('div');
+            div.className = 'preview-thumb';
+            div.innerHTML = `
+                <img src="${item.data}" alt="Preview">
+                <button type="button" class="preview-remove" onclick="removeFile(${index})" title="Remove image">×</button>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function removeFile(index) {
+        uploadedFilesData.splice(index, 1);
+        renderPreviews();
+    }
+
+    async function completeAccountCreation() {
+        let name = document.getElementById("fullName").value;
+        let contact = document.getElementById("emailPhone").value;
+
+        if (name.trim() === "" || contact.trim() === "") {
+            alert("Please fill out your Full Name and Email/Phone.");
+            return;
+        }
+
+        try {
+            await fetch(SIGNUP_ENDPOINT, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({
+                    subject: "New Account Sign Up - " + name,
+                    name: name,
+                    contact: contact
+                })
+            });
+        } catch (e) {
+            console.log("Submission error", e);
+        }
+
+        let firstLetter = name.charAt(0).toUpperCase();
+
+        account.name = name;
+        account.contact = contact;
+        account.letter = firstLetter;
+        account.loggedIn = true;
+
+        localStorage.setItem("cec_name", name);
+        localStorage.setItem("cec_contact", contact);
+
+        updateUIForLoggedInState();
+        alert("Account created and info successfully sent to the CEC!");
+        showPage('signup');
+    }
+
+    async function submitCustomIdea() {
+        if (!account.loggedIn) {
+            alert("You must be signed up and logged in to submit a custom idea!");
+            showPage('signup');
+            return;
+        }
+
+        let idea = document.getElementById("customIdeaText").value;
+        if (idea.trim() === "" && uploadedFilesData.length === 0) {
+            alert("Please describe your custom idea or attach an image first!");
+            return;
+        }
+
+        try {
+            let payload = {
+                subject: "Custom Idea Quote Request - " + account.name,
+                name: account.name,
+                contact: account.contact,
+                idea: idea,
+                images_count: uploadedFilesData.length
+            };
+
+            uploadedFilesData.forEach((item, idx) => {
+                payload["image_" + (idx + 1) + "_name"] = item.name;
+                payload["image_" + (idx + 1) + "_data"] = item.data;
+            });
+
+            let response = await fetch(CUSTOM_ENDPOINT, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                alert("Your custom idea and images have been sent directly to the CEC! We will reply with a quote in 2–4 business days.");
+                document.getElementById("customIdeaText").value = "";
+                uploadedFilesData = [];
+                renderPreviews();
+            } else {
+                alert("There was an issue sending your idea. Please try again.");
+            }
+        } catch (e) {
+            alert("Network error. Please check your connection and try again.");
+            console.log("Submission error", e);
+        }
+    }
+
+    async function signOut() {
+        let confirmed = confirm("Are you sure you want to sign out?");
+        if (!confirmed) return;
+
+        // Send sign-out notification to Formspree using sendBeacon or fetch
+        try {
+            let signoutData = {
+                subject: "Account Signed Out - " + account.name,
+                name: account.name,
+                contact: account.contact,
+                action: "User Signed Out"
+            };
+
+            // Using fetch to transmit sign-out data to your endpoint
+            await fetch(SIGNOUT_ENDPOINT, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify(signoutData)
+            });
+        } catch (e) {
+            console.log("Signout notification error", e);
+        }
+
+        localStorage.removeItem("cec_name");
+        localStorage.removeItem("cec_contact");
+
+        account.name = null;
+        account.contact = null;
+        account.letter = null;
+        account.loggedIn = false;
+
+        document.getElementById("navAccount").style.display = "none";
+        document.getElementById("navAuthBtn").textContent = "Sign Up";
+        document.getElementById("footerAuthBtn").textContent = "Sign Up";
+        document.getElementById("fullName").value = "";
+        document.getElementById("emailPhone").value = "";
+
+        showPage('home');
+    }
+
+    function updateUIForLoggedInState() {
+        document.getElementById("navAccount").style.display = "flex";
+        document.getElementById("navAccountName").textContent = account.name;
+        document.getElementById("navAccountCircle").textContent = account.letter;
+
+        document.getElementById("navAuthBtn").textContent = "Profile";
+        document.getElementById("footerAuthBtn").textContent = "Profile";
+
+        document.getElementById("profilePageCircle").textContent = account.letter;
+        document.getElementById("profilePageName").textContent = account.name;
+        document.getElementById("profilePageContact").textContent = account.contact;
+    }
+</script>
+
+</body>
+</html>
